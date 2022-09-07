@@ -2,6 +2,8 @@ import React from "react";
 import "./style.css";
 import { deleteData, postData } from "../../context/getData";
 import { useReducer } from "react";
+import { UserDataContext } from "../../context/getData";
+import { useContext } from "react";
 
 function reducer(state, action) {
   if (action.type === "delete") {
@@ -9,14 +11,16 @@ function reducer(state, action) {
   }
 }
 
-const CreateCard = ({ data }) => {
-  const [state, dispatch] = useReducer(reducer, data);
-  console.log(state)
+// const [state, dispatch] = useReducer(reducer, )
+
+const CreateCard = () => {
+  const context = useContext(UserDataContext);
+  console.log(context.state.userData)
   return (
     <div className="cardWrapper">
-      {state &&
-        state.map((value, index) => (
-          <div className="card">
+      {context.state.userData &&
+        context.state.userData.map((value, index) => (
+          <div className="card" key={index + "card"}>
             <div className="imageWrapper">
               <img src={value.avatar} alt="photo" className="brandPic" />
             </div>
@@ -24,18 +28,10 @@ const CreateCard = ({ data }) => {
               <h3>{value.title}</h3>
             </div>
             <div className="buttons">
-              <button
-                className="deleteButton"
-                onClick={() => {
-                  postData();
-                  dispatch({
-                    type: "delete",
-                    payload: {
-                      id: data.id,
-                    },
-                  });
-                }}
-              >
+              <button className="deleteButton" onClick={() => {
+                console.log(value);
+                value && deleteData(value.id, context.dispatch)
+              }}>
                 Delete
               </button>
             </div>

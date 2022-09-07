@@ -1,13 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { getData } from "../../context/getData";
 import CreateCard from "../../components/cards";
+import {
+  UserDataContext,
+  UserDataProvider,
+  dispatch,
+} from "../../context/getData";
 
 const BrandPage = () => {
-  const [brandData, setBrandData] = useState([]);
+  // const [brandData, setBrandData] = useState([]);
+  const context = useContext(UserDataContext);
+  // console.log(context);
+  // console.log(context.state.loading);
+  // console.log(context.state.userData);
   useEffect(() => {
-    getData(setBrandData);
+    getData(context.dispatch);
   }, []);
-  console.log(brandData);
-  return <div>{brandData && <CreateCard data={brandData} />}</div>;
+  console.log();
+  return (
+    <div>
+      <CreateCard />
+    </div>
+  );
 };
 export default BrandPage;
